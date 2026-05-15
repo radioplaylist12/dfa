@@ -1,1101 +1,829 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Embed TV Online - Roger Play</title>
-<meta content="Embed TV Online é uma plataforma de embed de canais de Tv Online Grátis, Canais de Futebol, Filmes, Séries e muito mais!" name="description"/>
-<link href="https://embedtvonline.com/" rel="canonical"/>
-<meta content="index,follow" name="robots"/>
-<meta content="Embed Canais" name="author"/>
-<link rel="icon" href="/icons/embedtv.png" sizes="32x32"/>
-<link rel="icon" href="/icons/embedtv.png" sizes="192x192"/>
-<link rel="apple-touch-icon" href="/icons/embedtv.png"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Ótica Heloísa • Música Ambiente • 5 Anúncios + Bluetooth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { min-height: 100vh; background-color: #000000; overflow: hidden; position: fixed; width: 100%; height: 100%; }
+        
+        .app { width: 100%; height: 100vh; background: #000; position: relative; overflow: hidden; }
+        
+        .fullscreen-video-container { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: #000; 
+            z-index: 1; 
+        }
+        .fullscreen-video-container video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+        }
+        
+        .controls-overlay { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 10; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            pointer-events: none; 
+        }
+        
+        .info-button {
+            position: fixed;
+            bottom: 140px;
+            right: 20px;
+            background: linear-gradient(135deg, #0066cc, #003366);
+            color: white;
+            border: none;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            cursor: pointer;
+            z-index: 26;
+            pointer-events: auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: floatButton 3s ease-in-out infinite;
+        }
+        @keyframes floatButton { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        .info-button:active { transform: scale(0.9); }
+        
+        .cta-button {
+            position: fixed;
+            bottom: 210px;
+            right: 20px;
+            background: #25D366 !important;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 18px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 26;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: auto;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .cta-button:active { transform: scale(0.95); }
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-2T9N2RHEW3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-2T9N2RHEW3');
-</script>
-
-<!-- Open Graph / Twitter Cards -->
-<meta property="og:type" content="website">
-<meta property="og:locale" content="pt_BR">
-<meta property="og:site_name" content="Embed TV Online">
-<meta property="og:title" content="Embed TV Online — Assistir TV online ao vivo, esportes, filmes e séries">
-<meta property="og:description" content="Assista canais de TV online ao vivo: esportes, filmes, séries e notícias. Plataforma simples para abrir o player e copiar o iframe.">
-<meta property="og:url" content="https://embedtvonline.com/">
-<meta property="og:image" content="https://embedtvonline.com/icons/og-image.jpg">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Embed TV Online — TV online ao vivo e embeds">
-<meta name="twitter:description" content="Canais de TV online, esportes, filmes, séries e notícias em tempo real.">
-<meta name="twitter:image" content="https://embedtvonline.com/icons/og-image.jpg">
-
-
-<style>
-:root{
-  --bg:#0e0f12;--surface:#0f1218;--card:#1f1f1f;--fg:#e8e8ea;--muted:#a7abb3;
-  --accent:#fa3706;--radius:16px;--shadow:0 4px 14px rgba(0,0,0,.35);
-  --container:min(1400px,94vw);
-  --footer-bg: #0b1330;
-  --footer-border: rgba(255,255,255,.10);
-  --link-underline: currentColor;
-}
-*{box-sizing:border-box}
-body {
-    margin: 0;
-    font: 500 16px / 1.45 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans";
-    background: #000000;
-    color: var(--fg);
-    min-height: 100vh;
-}
-
-/* Header */
-.site-header{position:relative;top:0;z-index:10;background:#fa0303;backdrop-filter:blur(10px) saturate(140%);border-bottom:0 solid rgba(255,255,255,.06)}
-.header-inner{width:var(--container);margin:0 auto;padding:16px 0;display:flex;align-items:center;justify-content:center;text-align:center}
-.brand{display:flex;flex-direction:column;align-items:center;gap:8px}
-.brand-row{display:inline-flex;align-items:center;gap:12px}
-.logo{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:transparent;border: 3px solid #333;}
-.logo svg{fill:#333;display:block}
-.brand h1{margin:0;font-size:clamp(24px,2.6vw,28px);font-weight:900;letter-spacing:.2px}
-.brand h1 a{color:#333;text-decoration:none}
-.brand .tagline{margin:2px 0 0;color:#333;font-size:14.5px;line-height:1.55;max-width:780px}
-@media (max-width:992px){.logo{width:40px;height:40px;border-radius:14px}.brand .tagline{font-size:14px;display: none;};}
-
-/* Barra de categorias + busca */
-.controls{width:var(--container);margin:0 auto;padding:14px 0 0}
-.cat-bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px auto 10px}
-.cat-btn{
-  border:2px solid #333;background:#0f1624;color:#fff;
-  padding:12px 20px;border-radius:999px;font:700 13px/1 system-ui;cursor:pointer;
-  transition:filter .15s,transform .06s;user-select:none
-}
-.cat-btn:hover{filter:brightness(1.1);background:#f80202;color:#333}
-.cat-btn:active{transform:translateY(1px)}
-.cat-btn.active{background:#fa0303;border-color:#000;color:#fff}
-
-.search-wrap{display:flex;justify-content:center;margin:0 auto 10px;padding:0 12px}
-.search-input{
-  width:min(720px,100%);padding:12px 14px;border-radius:12px;
-  border:1px solid #333;background:transparent;color:#ddd;
-  font:600 15px/1.2 system-ui;outline:none;
-}
-.search-input::placeholder{color:#ddd}
-
-/* Grid */
-.grid{width:var(--container);margin:18px auto 60px;display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-top:5px;padding: 10px;}
-@media (max-width:1200px){.grid{grid-template-columns:repeat(4,1fr)}}
-@media (max-width:992px){.grid{grid-template-columns:repeat(3,1fr)}}
-@media (max-width:768px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:480px){.grid{grid-template-columns:repeat(2,1fr)}}
-
-.card {
-    background: #101010;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    transition: transform .15s, box-shadow .2s;
-    border: 1px solid #2c2c2c;
-}
-.card:hover{transform:translateY(-2px);border:1px solid #fa0707;}
-
-.thumb{display:block;position:relative;aspect-ratio:16/9;background:#191919}
-.thumb img{width:100%;height:100%;object-fit:contain;display:block;}
-
-.title{padding:12px 12px 12px;font-size:15px;font-weight:700;text-align:center;color:#e7ebf5;text-transform:none}
-.watch-row{padding:0 12px 10px}
-.watch-btn{display:block;width:100%;padding:12px 14px;border-radius:10px;background:#30363f;color:#fff;text-align:center;text-decoration:none;font-weight:800;letter-spacing:.2px;border:0;transition:filter .15s, transform .06s}
-.watch-btn:hover{filter:brightness(1.05)} .watch-btn:active{transform:translateY(1px)}
-
-.embedrow{position:relative; padding:8px 12px;}
-.embed-input {
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    font: 500 10px / 1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    color: #888;
-    background: #000000;
-    border: 1px solid #161616;
-    border-radius: 8px;
-    padding: 8px 30px 8px 10px;
-}
-
-.copy-btn:hover{filter:brightness(1.1)}
-.copy-btn:active{transform:translateY(calc(-50% + 1px))}
-.copy-toast{
-  position:absolute;right:20px;bottom:100%;margin-bottom:6px;
-  background:#0f1624;border:1px solid #2a3750;color:#dfe8ff;
-  font:700 11px/1 system-ui;padding:6px 8px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .15s
-}
-.copy-toast.show{opacity:1}
-
-/* Footer */
-footer.embedtv{background:#111;color:#fff;text-align:center;padding:10px 0 10px 0;border:0}
-footer.embedtv small{font-size:12px;letter-spacing:.2px}
-
-.controls{width:var(--container);margin:0 auto;padding:14px 0 0}
-.cat-bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px auto 10px}
-.cat-btn{
-  border:2px solid #333;background:transparent;color:#fff;
-  padding:15px 22px;border-radius:12px;font:700 13px/1 system-ui;cursor:pointer;
-  transition:filter .15s,transform .06s;user-select:none
-}
-.cat-btn:hover{filter:brightness(1.1)}
-.cat-btn:active{transform:translateY(1px)}
-.cat-btn.active{background:linear-gradient(45deg, #f80303, #fc0202);border-color:transparent;color:#333}
-
-.search-wrap{display:flex;justify-content:center;margin:0 auto 10px;padding:0 12px;position:relative;margin-top: 30px;}
-.search-icon{
-  position:absolute;left:calc(50% - min(720px,100%)/2 + 14px);top:50%;transform:translateY(-50%);
-  width:18px;height:18px;opacity:.8;pointer-events:none;
-}
-@media (max-width:760px){ .search-icon{left:22px} }
-
-.search-input{
-  width:min(720px,100%);padding:18px 14px 18px 40px;border-radius:12px;
-  border:2px solid #333;background:transparent;color:#ddd;
-  font:600 15px/1.2 system-ui;outline:none;
-}
-.search-input::placeholder{color:#fff}
-
-.embedrow{position:relative}
-.copy-btn{
-  position:absolute;right:16px;top:50%;transform:translateY(-50%);
-  border:0px solid #2a3750;background:transparent;color:#dfe8ff;
-  padding:6px;border-radius:8px;cursor:pointer;display:grid;place-items:center;
-}
-.copy-btn svg{width:16px;height:16px;display:block;fill: #888;}
-.copy-btn:hover{filter:brightness(1.1)}
-.copy-btn:active{transform:translateY(calc(-50% + 1px))}
-.copy-toast{
-  position:absolute;right:20px;bottom:100%;margin-bottom:6px;
-  background:#0f1624;border:1px solid #2a3750;color:#dfe8ff;
-  font:700 11px/1 system-ui;padding:6px 8px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .15s
-}
-.copy-toast.show{opacity:1}
-
-.title{
-  padding:12px 12px;
-  font-size:15px;font-weight:700;text-align:center;color:#e7ebf5;
-  min-height: 22px;
-}
-@media (max-width:768px){
-  .title{ min-height: 44px; }
-}
-
-.watch-row{ padding:0 12px 10px; min-height: 48px; display:flex; align-items:center; }
-
-.thumb {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    background: #101010;
-}
-.thumb img{ 
-  position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin: auto;
-    max-width: 60%;
-    max-height: 60%;
-    object-fit: contain;
-}
-
-.grid{ contain: layout paint; }
-.embedrow{ position:relative; min-height: 46px; }
-.copy-toast{ will-change: opacity; }
-
-.quick-nav{
-  width: var(--container);
-  margin: 14px auto 6px;
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.quick-nav a{
-  color: #ffffff;
-  text-decoration: underline;
-  text-decoration-color: var(--link-underline);
-  text-underline-offset: 3px;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: .2px;
-  padding: 6px 2px;
-  transition: opacity .15s ease;
-}
-.quick-nav a:hover{ opacity: .9; }
-.quick-nav a:focus-visible{
-  outline: 2px solid #fff; outline-offset: 2px; border-radius: 4px;
-}
-
-.footer-seo{
-  background: #111111;
-  border-top: 0px solid var(--footer-border);
-  border-bottom: 1px solid var(--footer-border);
-  margin: 16px 0 10px;
-}
-.footer-seo__inner{
-  max-width: var(--container);
-  margin: 0 auto;
-  padding: 18px 16px 14px;
-  line-height: 1.65;
-  text-align: left;
-}
-.footer-seo p{
-  margin: 0 0 12px;
-  color: #bcbcbc;
-  font-size: 15px;
-}
-.footer-seo p:last-child{ margin-bottom: 0; }
-.footer-seo strong{ color: #ffffff; }
-.footer-seo em{ font-style: italic; }
-.footer-seo code{
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.12);
-  padding: 1px 6px; border-radius: 6px;
-  color: #e6f0ff; font-size: 12.5px;
-}
-
-.share-bar{
-  width: var(--container);
-  margin: 10px auto 2px;
-  padding: 10px 12px 16px;
-  display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px;
-  justify-content: center;
-}
-.share-bar__label{
-  font-size: 13px; color: #e9ecff; opacity: .9;
-}
-.share-link{
-  color: #ffffff;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: .2px;
-  transition: opacity .15s ease;
-}
-.share-link:hover{ opacity: .9; }
-.share-link:focus-visible{
-  outline: 2px solid #fff; outline-offset: 2px; border-radius: 4px;
-}
-
-@media (max-width: 640px){
-  .footer-seo__inner{ padding: 16px 14px; }
-  .footer-seo p{ font-size: 14.5px; }
-  .quick-nav{ gap: 10px; }
-}
-@media (prefers-reduced-motion: reduce){
-  .quick-nav a, .share-link{ transition: none; }
-}
-</style>
+        /* Botão Bluetooth */
+        .bluetooth-button {
+            position: fixed;
+            bottom: 275px;
+            right: 20px;
+            background: #0082fc;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 18px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 26;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: auto;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .bluetooth-button:active { transform: scale(0.95); background: #005bb5; }
+        
+        .notification-top {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            text-align: center;
+            z-index: 30;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            opacity: 0;
+        }
+        .notification-top.show { opacity: 1; }
+        .notification-top .message {
+            display: inline-block;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-size: 0.85rem;
+            color: #fff;
+            border-left: 3px solid #25D366;
+        }
+        
+        .menu-button {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            cursor: pointer;
+            z-index: 31;
+            pointer-events: auto;
+            transition: 0.2s;
+        }
+        .menu-button:active { transform: scale(0.9); background: #25D366; color: #000; }
+        
+        .menu-popup {
+            position: absolute;
+            top: 65px;
+            right: 12px;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 10px;
+            z-index: 32;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            pointer-events: auto;
+        }
+        .menu-popup.open { display: flex; }
+        .menu-popup button {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.1s;
+        }
+        .menu-popup button:active { background: #25D366; color: #000; }
+        .menu-popup i { width: 24px; text-align: center; }
+        
+        .info-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #ffffff, #f0f0f0);
+            border-radius: 30px;
+            padding: 25px;
+            z-index: 5000;
+            display: none;
+            max-width: 90vw;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 2px solid #0066cc;
+        }
+        .info-modal.open { display: block; }
+        .info-modal h2 { color: #0066cc; margin-bottom: 15px; }
+        .info-modal h2 i { margin-right: 10px; }
+        .info-modal p { color: #333; margin: 8px 0; font-size: 0.9rem; }
+        .info-modal .whatsapp { color: #25D366; font-weight: bold; font-size: 1.1rem; margin: 15px 0; }
+        .close-info { width: 100%; padding: 12px; background: #0066cc; border: none; border-radius: 25px; color: white; margin-top: 15px; cursor: pointer; font-weight: bold; }
+        .close-info:active { background: #004499; }
+        
+        .manual-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 5000;
+            display: none;
+            overflow-y: auto;
+            pointer-events: auto;
+            padding: 20px;
+        }
+        .manual-modal.open { display: block; }
+        .manual-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 40px;
+            padding: 25px 20px 35px;
+            color: #fff;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 1px solid rgba(0,102,204,0.3);
+        }
+        .manual-container h1 { text-align: center; color: #0066cc; font-size: 1.8rem; margin-bottom: 5px; }
+        .manual-container .subtitle { text-align: center; font-size: 0.8rem; color: #aaa; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+        .manual-container h2 { background: rgba(0,102,204,0.2); padding: 10px 15px; border-radius: 20px; margin: 20px 0 15px; font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        .manual-container h2 i { color: #25D366; font-size: 1.5rem; }
+        .manual-container p { font-size: 0.95rem; line-height: 1.4; color: #ddd; margin-bottom: 10px; }
+        .close-manual-btn { width: 100%; padding: 14px; background: #0066cc; border: none; border-radius: 40px; color: white; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 25px; transition: 0.2s; }
+        .close-manual-btn:active { transform: scale(0.98); background: #004499; }
+        
+        .bottom-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 16px;
+            z-index: 20;
+            pointer-events: auto;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .bottom-controls.hide { transform: translateY(100%); opacity: 0; pointer-events: none; }
+        .track-info { text-align: center; margin-bottom: 8px; }
+        .track-info p { font-size: 0.85rem; font-weight: 500; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .progress-area { margin-bottom: 8px; }
+        .progress-time { display: flex; justify-content: space-between; font-size: 0.7rem; color: #ccc; margin-bottom: 4px; }
+        .progress-bar { height: 3px; background: rgba(255,255,255,0.3); cursor: pointer; border-radius: 3px; }
+        .progress-fill { height: 100%; background: #25D366; width: 0%; border-radius: 3px; }
+        .control-buttons { display: flex; align-items: center; justify-content: center; gap: 20px; }
+        .control-btn { background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 1.2rem; width: 44px; height: 44px; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .control-btn:active { transform: scale(0.9); background: #25D366; color: #000; }
+        .play-btn { font-size: 1.6rem; width: 54px; height: 54px; background: #25D366; color: #000; border: none; }
+        
+        .audio-indicator {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: #25D366;
+            z-index: 31;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .visualizer {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            justify-content: center;
+            z-index: 31;
+            pointer-events: none;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            padding: 8px 12px;
+            border-radius: 30px;
+        }
+        .visualizer-bar { width: 4px; height: 20px; background: linear-gradient(135deg, #25D366, #0066cc); border-radius: 2px; transition: height 0.05s ease; }
+        
+        .loading-spinner {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(12px);
+            padding: 15px 25px;
+            border-radius: 50px;
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border: 1px solid rgba(0,102,204,0.5);
+            pointer-events: none;
+        }
+        .loading-spinner.show { display: flex; }
+        
+        .audio-ad-container {
+            position: fixed;
+            bottom: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #25D366, #0066cc);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            z-index: 1002;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease;
+        }
+        .audio-ad-container.show { display: flex; }
+        .audio-ad-container i { font-size: 1.2rem; }
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+        
+        #tap-to-start {
+            position: fixed;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1rem;
+            z-index: 10000;
+            cursor: pointer;
+            display: block;
+            animation: btnPulse 1.5s infinite;
+            white-space: nowrap;
+            pointer-events: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            border: none;
+        }
+        @keyframes btnPulse { 0% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } 100% { transform: translateX(-50%) scale(1); } }
+        
+        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.5s; }
+        #splash.hidden { opacity: 0; pointer-events: none; }
+        .splash-content { text-align: center; color: #fff; }
+        .splash-content i { font-size: 3rem; color: #25D366; margin-bottom: 1rem; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0.6; transform: scale(1); } }
+    </style>
 </head>
 <body>
-<header class="site-header" role="banner">
-  <div class="header-inner">
-    <div class="brand">
-      <div class="brand-row">
-        <div aria-hidden="true" class="logo">
-          <svg height="28" viewBox="0 0 640 640" width="28" xmlns="http://www.w3.org/2000/svg"><path d="M392.8 65.2C375.8 60.3 358.1 70.2 353.2 87.2L225.2 535.2C220.3 552.2 230.2 569.9 247.2 574.8C264.2 579.7 281.9 569.8 286.8 552.8L414.8 104.8C419.7 87.8 409.8 70.1 392.8 65.2zM457.4 201.3C444.9 213.8 444.9 234.1 457.4 246.6L530.8 320L457.4 393.4C444.9 405.9 444.9 426.2 457.4 438.7C469.9 451.2 490.2 451.2 502.7 438.7L598.7 342.7C611.2 330.2 611.2 309.9 598.7 297.4L502.7 201.4C490.2 188.9 469.9 188.9 457.4 201.4zM182.7 201.3C170.2 188.8 149.9 188.8 137.4 201.3L41.4 297.3C28.9 309.8 28.9 330.1 41.4 342.6L137.4 438.6C149.9 451.1 170.2 451.1 182.7 438.6C195.2 426.1 195.2 405.8 182.7 393.3L109.3 320L182.6 246.6C195.1 234.1 195.1 213.8 182.6 201.3z"></path></svg>
+    <div id="splash"><div class="splash-content"><i class="fas fa-glasses"></i><h1>Ótica Heloísa</h1><p>🎵 5 anúncios de voz | Inicia com anúncio</p><p style="font-size:0.8rem; margin-top:10px;">Clique no botão para ativar o som + Bluetooth</p></div></div>
+    <div id="tap-to-start"><i class="fab fa-whatsapp"></i> 🎧 ATIVAR MÚSICA + ANÚNCIO INICIAL</div>
+    
+    <div class="app">
+        <div class="fullscreen-video-container">
+            <video id="mainVideo" autoplay loop muted playsinline>
+                <source src="anun.mp4" type="video/mp4">
+            </video>
         </div>
-        <h1><a href="/">Roger Play TV</a></h1>
-      </div>
-      <p class="tagline">Teste 2026 <!14+>.</p>
+        
+        <div class="controls-overlay">
+            <div class="bottom-controls" id="bottomControls">
+                <div class="track-info"><p id="trackArtist">🎵 Clique em ATIVAR (primeiro anúncio)</p></div>
+                <div class="progress-area">
+                    <div class="progress-time"><span id="currentTime">0:00</span><span id="totalTime">0:00</span></div>
+                    <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+                </div>
+                <div class="control-buttons">
+                    <button class="control-btn" id="prevBtn"><i class="fas fa-step-backward"></i></button>
+                    <button class="control-btn play-btn" id="playPauseBtn"><i class="fas fa-play"></i></button>
+                    <button class="control-btn" id="shuffleBtn"><i class="fas fa-random"></i></button>
+                    <button class="control-btn" id="nextBtn"><i class="fas fa-step-forward"></i></button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="audio-indicator" id="audioIndicator"><i class="fas fa-circle"></i> Aguardando</div>
+        <div class="visualizer" id="visualizer">
+            <div class="visualizer-bar" id="bar1"></div>
+            <div class="visualizer-bar" id="bar2"></div>
+            <div class="visualizer-bar" id="bar3"></div>
+            <div class="visualizer-bar" id="bar4"></div>
+        </div>
+        
+        <div class="loading-spinner" id="loadingSpinner">
+            <i class="fas fa-circle-notch fa-spin"></i>
+            <span>Carregando música...</span>
+        </div>
+        
+        <button class="cta-button" id="ctaButton"><i class="fab fa-whatsapp"></i> FALE CONOSCO</button>
+        <button class="info-button" id="infoButton"><i class="fas fa-info"></i></button>
+        <button class="bluetooth-button" id="bluetoothButton"><i class="fab fa-bluetooth-b"></i> Conectar Bluetooth</button>
+        
+        <div id="notificationTop" class="notification-top">
+            <div class="message" id="notificationMessage"></div>
+        </div>
+        
+        <audio id="adAudio" preload="auto" style="display: none;"></audio>
+        <div class="audio-ad-container" id="audioAdToast">
+            <i class="fas fa-volume-up"></i>
+            <span id="audioAdText">🎧 Anúncio - Ótica Heloísa</span>
+        </div>
+        
+        <div class="menu-button" id="menuButton"><i class="fas fa-ellipsis-v"></i></div>
+        <div class="menu-popup" id="menuPopup">
+            <button id="manualMenuBtn"><i class="fas fa-book"></i> Como funciona</button>
+            <button id="shareMenuBtn"><i class="fas fa-share-alt"></i> Compartilhar</button>
+            <button id="whatsappMenuBtn"><i class="fab fa-whatsapp"></i> Falar com a Ótica</button>
+        </div>
+        
+        <div class="info-modal" id="infoModal">
+            <h2><i class="fas fa-glasses"></i> Ótica Heloísa</h2>
+            <p>👓 Armações de qualidade</p>
+            <p>🔬 Lentes precisas</p>
+            <p>⭐ Atendimento especializado</p>
+            <div class="whatsapp"><i class="fab fa-whatsapp"></i> (12) 98846-1978</div>
+            <p>📍 Venha nos visitar!</p>
+            <button class="close-info" id="closeInfoBtn">FECHAR</button>
+        </div>
+        
+        <div class="manual-modal" id="manualModal">
+            <div class="manual-container">
+                <h1>📘 Ótica Heloísa</h1>
+                <div class="subtitle">Música ambiente com 5 anúncios de voz | Inicia com anúncio + ciclo a cada 2 músicas</div>
+                
+                <h2><i class="fas fa-music"></i> 1. Como funciona</h2>
+                <p>🎧 Clique em "ATIVAR" → primeiro anúncio toca, depois música aleatória infinita</p>
+                <p>📢 A cada 2 músicas completas, um anúncio de VOZ aleatório (5 diferentes!) será reproduzido.</p>
+                <p>🎲 Todas as músicas são ALEATÓRIAS e infinitas.</p>
+                <p>🔊 Controles de play/pause, próximo, anterior e aleatório disponíveis.</p>
+                
+                <h2><i class="fas fa-hand-peace"></i> 2. Gestos</h2>
+                <p>👉 Deslize para esquerda/direita = próxima/anterior música (aleatória)</p>
+                <p>👆 Toque duplo = pausa/play</p>
+                
+                <h2><i class="fab fa-bluetooth"></i> 3. Bluetooth</h2>
+                <p>Botão azul "Conectar Bluetooth" → permite parear com caixas/fones Bluetooth.</p>
+                
+                <h2><i class="fab fa-whatsapp"></i> 4. Contato</h2>
+                <p>WhatsApp direto para a Ótica Heloísa.</p>
+                
+                <button class="close-manual-btn" id="closeManualBtn">✕ FECHAR</button>
+            </div>
+        </div>
+        
+        <audio id="musicPlayer" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="backgroundAudio" preload="auto" crossorigin="anonymous" style="display: none;"></audio>
     </div>
-  </div>
-</header>
-
-<section class="controls" aria-label="Filtros e busca" id="ec-controls">
-  <div class="cat-bar" id="catBar"></div>
-  <div class="search-wrap">
-    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg"
-         viewBox="0 0 640 640" aria-hidden="true" focusable="false" fill="white">
-      <path d="M480 272C480 317.9 465.1 360.3 440 394.7L566.6 521.4C579.1 533.9 579.1 554.2 566.6 566.7C554.1 579.2 533.8 579.2 521.3 566.7L394.7 440C360.3 465.1 317.9 480 272 480C157.1 480 64 386.9 64 272C64 157.1 157.1 64 272 64C386.9 64 480 157.1 480 272zM272 416C351.5 416 416 351.5 416 272C416 192.5 351.5 128 272 128C192.5 128 128 192.5 128 272C128 351.5 192.5 416 272 416z"/>
-    </svg>
-    <input id="searchInput" class="search-input" type="search"
-           placeholder="Buscar canais..." autocomplete="off" aria-label="Buscar canais">
-  </div>
-</section>
-
-<main class="grid">
-<h2 style="grid-column:1 / -1; text-align:center; margin:30px 0 8px; font-weight:800; color: #00d9ff;">Esportes</h2>
-<div class="card">
-<a aria-label="Band Sports" class="thumb" href="https://embedtvonline.com/bandsports/">
-<img alt="Band Sports" decoding="async" src="https://embedtvonline.com/images/bandsports.png"/>
-</a>
-<div class="title">Band Sports</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/bandsports/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Canal Off" class="thumb" href="https://embedtvonline.com/canaloff/">
-<img alt="Canal Off" decoding="async" src="https://embedtvonline.com/images/canaloff.png"/>
-</a>
-<div class="title">Canal Off</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/canaloff/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="CazéTV" class="thumb" href="https://embedtvonline.com/cazetv/">
-<img alt="CazéTV" decoding="async" src="https://embedtvonline.com/images/cazetv.png"/>
-</a>
-<div class="title">CazéTV</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/cazetv/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Combate" class="thumb" href="https://embedtvonline.com/combate/">
-<img alt="Combate" decoding="async" src="https://embedtvonline.com/images/combate.png"/>
-</a>
-<div class="title">Combate</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/combate/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Disney+" class="thumb" href="https://embedtvonline.com/disneyplus/">
-<img alt="Disney+" decoding="async" src="https://embedtvonline.com/images/disneyplus.png"/>
-</a>
-<div class="title">Disney+</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/disneyplus/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="ESPN" class="thumb" href="https://embedtvonline.com/espn/">
-<img alt="ESPN" decoding="async" src="https://embedtvonline.com/images/espn.png"/>
-</a>
-<div class="title">ESPN</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/espn/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Max" class="thumb" href="https://embedtvonline.com/max/">
-<img alt="Max" decoding="async" src="https://embedtvonline.com/images/max.png"/>
-</a>
-<div class="title">Max</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/max/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Nosso Futebol" class="thumb" href="https://embedtvonline.com/nossofutebol/">
-<img alt="Nosso Futebol" decoding="async" src="https://embedtvonline.com/images/nossofutebol.png"/>
-</a>
-<div class="title">Nosso Futebol</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/nossofutebol/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="N Sports" class="thumb" href="https://embedtvonline.com/nsports/">
-<img alt="N Sports" decoding="async" src="https://embedtvonline.com/images/nsports.png"/>
-</a>
-<div class="title">N Sports</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/nsports/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Paramount +" class="thumb" href="https://embedtvonline.com/paramountplus/">
-<img alt="Paramount +" decoding="async" src="https://embedtvonline.com/images/paramountplus.png"/>
-</a>
-<div class="title">Paramount +</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/paramountplus/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Premiere Clubes" class="thumb" href="https://embedtvonline.com/premiereclubes/">
-<img alt="Premiere Clubes" decoding="async" src="https://embedtvonline.com/images/premiere.png"/>
-</a>
-<div class="title">Premiere Clubes</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/premiereclubes/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Premiere 2" class="thumb" href="https://embedtvonline.com/premiere2/">
-<img alt="Premiere 2" decoding="async" src="https://embedtvonline.com/images/premiere.png"/>
-</a>
-<div class="title">Premiere 2</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/premiere2/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Premiere 3" class="thumb" href="https://embedtvonline.com/premiere3/">
-<img alt="Premiere 3" decoding="async" src="https://embedtvonline.com/images/premiere.png"/>
-</a>
-<div class="title">Premiere 3</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/premiere3/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Premiere 4" class="thumb" href="https://embedtvonline.com/premiere4/">
-<img alt="Premiere 4" decoding="async" src="https://embedtvonline.com/images/premiere.png"/>
-</a>
-<div class="title">Premiere 4</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/premiere4/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Premiere 5" class="thumb" href="https://embedtvonline.com/premiere5/">
-<img alt="Premiere 5" decoding="async" src="https://embedtvonline.com/images/premiere.png"/>
-</a>
-<div class="title">Premiere 5</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/premiere5/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Premiere 6" class="thumb" href="https://embedtvonline.com/premiere6/">
-<img alt="Premiere 6" decoding="async" src="https://embedtvonline.com/images/premiere.png"/>
-</a>
-<div class="title">Premiere 6</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/premiere6/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Premiere 7" class="thumb" href="https://embedtvonline.com/premiere7/">
-<img alt="Premiere 7" decoding="async" src="https://embedtvonline.com/images/premiere.png"/>
-</a>
-<div class="title">Premiere 7</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/premiere7/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Premiere 8" class="thumb" href="https://embedtvonline.com/premiere8/">
-<img alt="Premiere 8" decoding="async" src="https://embedtvonline.com/images/premiere.png"/>
-</a>
-<div class="title">Premiere 8</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/premiere8/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="SporTV" class="thumb" href="https://embedtvonline.com/sportv/">
-<img alt="SporTV" decoding="async" src="https://embedtvonline.com/images/sportv.png"/>
-</a>
-<div class="title">SporTV</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/sportv/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="SporTV 2" class="thumb" href="https://embedtvonline.com/sportv2/">
-<img alt="SporTV 2" decoding="async" src="https://embedtvonline.com/images/sportv2.png"/>
-</a>
-<div class="title">SporTV 2</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/sportv2/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="SporTV 3" class="thumb" href="https://embedtvonline.com/sportv3/">
-<img alt="SporTV 3" decoding="async" src="https://embedtvonline.com/images/sportv3.png"/>
-</a>
-<div class="title">SporTV 3</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/sportv3/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="TNT" class="thumb" href="https://embedtvonline.com/tnt/">
-<img alt="TNT" decoding="async" src="https://embedtvonline.com/images/tnt.png"/>
-</a>
-<div class="title">TNT</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/tnt/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="UFC Fight Pass" class="thumb" href="https://embedtvonline.com/ufcfightpass/">
-<img alt="UFC Fight Pass" decoding="async" src="https://embedtvonline.com/images/ufcfightpass.png"/>
-</a>
-<div class="title">UFC Fight Pass</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/ufcfightpass/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Xsports" class="thumb" href="https://embedtvonline.com/xsports/">
-<img alt="Xsports" decoding="async" src="https://embedtvonline.com/images/xsports.png"/>
-</a>
-<div class="title">Xsports</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/xsports/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-
-<h2 style="grid-column:1 / -1; text-align:center; margin:30px 0 8px; font-weight:800; color: #00d9ff;">Filmes e Séries</h2>
-<div class="card">
-<a aria-label="A&amp;E" class="thumb" href="https://embedtvonline.com/aee/">
-<img alt="A&amp;E" decoding="async" src="https://embedtvonline.com/images/aee.png"/>
-</a>
-<div class="title">A&amp;E</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/aee/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="AMC" class="thumb" href="https://embedtvonline.com/amc/">
-<img alt="AMC" decoding="async" src="https://embedtvonline.com/images/amc.png"/>
-</a>
-<div class="title">AMC</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/amc/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="AXN" class="thumb" href="https://embedtvonline.com/axn/">
-<img alt="AXN" decoding="async" src="https://embedtvonline.com/images/axn.png"/>
-</a>
-<div class="title">AXN</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/axn/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Cinemax" class="thumb" href="https://embedtvonline.com/cinemax/">
-<img alt="Cinemax" decoding="async" src="https://embedtvonline.com/images/cinemax.png"/>
-</a>
-<div class="title">Cinemax</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/cinemax/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Globoplay Novelas" class="thumb" href="https://embedtvonline.com/globoplaynovelas/">
-<img alt="Globoplay Novelas" decoding="async" src="https://embedtvonline.com/images/globoplaynovelas.png"/>
-</a>
-<div class="title">Globoplay Novelas</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/globoplaynovelas/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="HBO" class="thumb" href="https://embedtvonline.com/hbo/">
-<img alt="HBO" decoding="async" src="https://embedtvonline.com/images/hbo.png"/>
-</a>
-<div class="title">HBO</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/hbo/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="HBO 2" class="thumb" href="https://embedtvonline.com/hbo2/">
-<img alt="HBO 2" decoding="async" src="https://embedtvonline.com/images/hbo2.png"/>
-</a>
-<div class="title">HBO 2</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/hbo2/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="HBO Family" class="thumb" href="https://embedtvonline.com/hbofamily/">
-<img alt="HBO Family" decoding="async" src="https://embedtvonline.com/images/hbofamily.png"/>
-</a>
-<div class="title">HBO Family</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/hbofamily/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="HBO Mundi" class="thumb" href="https://embedtvonline.com/hbomundi/">
-<img alt="HBO Mundi" decoding="async" src="https://embedtvonline.com/images/hbomundi.png"/>
-</a>
-<div class="title">HBO Mundi</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/hbomundi/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="HBO Plus" class="thumb" href="https://embedtvonline.com/hboplus/">
-<img alt="HBO Plus" decoding="async" src="https://embedtvonline.com/images/hboplus.png"/>
-</a>
-<div class="title">HBO Plus</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/hboplus/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="HBO Pop" class="thumb" href="https://embedtvonline.com/hbopop/">
-<img alt="HBO Pop" decoding="async" src="https://embedtvonline.com/images/hbopop.png"/>
-</a>
-<div class="title">HBO Pop</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/hbopop/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="HBO Signature" class="thumb" href="https://embedtvonline.com/hbosignature/">
-<img alt="HBO Signature" decoding="async" src="https://embedtvonline.com/images/hbosignature.png"/>
-</a>
-<div class="title">HBO Signature</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/hbosignature/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="HBO Xtreme" class="thumb" href="https://embedtvonline.com/hboxtreme/">
-<img alt="HBO Xtreme" decoding="async" src="https://embedtvonline.com/images/hboxtreme.png"/>
-</a>
-<div class="title">HBO Xtreme</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/hboxtreme/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Megapix" class="thumb" href="https://embedtvonline.com/megapix/">
-<img alt="Megapix" decoding="async" src="https://embedtvonline.com/images/megapix.png"/>
-</a>
-<div class="title">Megapix</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/megapix/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Paramount Network" class="thumb" href="https://embedtvonline.com/paramountnetwork/">
-<img alt="Paramount Network" decoding="async" src="https://embedtvonline.com/images/paramountnetwork.png"/>
-</a>
-<div class="title">Paramount Network</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/paramountnetwork/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Sony Channel" class="thumb" href="https://embedtvonline.com/sonychannel/">
-<img alt="Sony Channel" decoding="async" src="https://embedtvonline.com/images/sonychannel.png"/>
-</a>
-<div class="title">Sony Channel</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/sonychannel/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Space" class="thumb" href="https://embedtvonline.com/space/">
-<img alt="Space" decoding="async" src="https://embedtvonline.com/images/space.png"/>
-</a>
-<div class="title">Space</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/space/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Studio Universal" class="thumb" href="https://embedtvonline.com/studiouniversal/">
-<img alt="Studio Universal" decoding="async" src="https://embedtvonline.com/images/studiouniversal.png"/>
-</a>
-<div class="title">Studio Universal</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/studiouniversal/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Telecine Action" class="thumb" href="https://embedtvonline.com/tcaction/">
-<img alt="Telecine Action" decoding="async" src="https://embedtvonline.com/images/tcaction.png"/>
-</a>
-<div class="title">Telecine Action</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/tcaction/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Telecine Cult" class="thumb" href="https://embedtvonline.com/tccult/">
-<img alt="Telecine Cult" decoding="async" src="https://embedtvonline.com/images/tccult.png"/>
-</a>
-<div class="title">Telecine Cult</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/tccult/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Telecine Fun" class="thumb" href="https://embedtvonline.com/tcfun/">
-<img alt="Telecine Fun" decoding="async" src="https://embedtvonline.com/images/tcfun.png"/>
-</a>
-<div class="title">Telecine Fun</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/tcfun/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Telecine Pipoca" class="thumb" href="https://embedtvonline.com/tcpipoca/">
-<img alt="Telecine Pipoca" decoding="async" src="https://embedtvonline.com/images/tcpipoca.png"/>
-</a>
-<div class="title">Telecine Pipoca</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/tcpipoca/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Telecine Premium" class="thumb" href="https://embedtvonline.com/tcpremium/">
-<img alt="Telecine Premium" decoding="async" src="https://embedtvonline.com/images/tcpremium.png"/>
-</a>
-<div class="title">Telecine Premium</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/tcpremium/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Telecine Touch" class="thumb" href="https://embedtvonline.com/tctouch/">
-<img alt="Telecine Touch" decoding="async" src="https://embedtvonline.com/images/tctouch.png"/>
-</a>
-<div class="title">Telecine Touch</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/tctouch/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="TNT" class="thumb" href="https://embedtvonline.com/tnt/">
-<img alt="TNT" decoding="async" src="https://embedtvonline.com/images/tnt.png"/>
-</a>
-<div class="title">TNT</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/tnt/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="TNT Novelas" class="thumb" href="https://embedtvonline.com/tntnovelas/">
-<img alt="TNT Novelas" decoding="async" src="https://embedtvonline.com/images/tntnovelas.png"/>
-</a>
-<div class="title">TNT Novelas</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/tntnovelas/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="TNT Series" class="thumb" href="https://embedtvonline.com/tntseries/">
-<img alt="TNT Series" decoding="async" src="https://embedtvonline.com/images/tntseries.png"/>
-</a>
-<div class="title">TNT Series</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/tntseries/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Universal TV" class="thumb" href="https://embedtvonline.com/universaltv/">
-<img alt="Universal TV" decoding="async" src="https://embedtvonline.com/images/universaltv.png"/>
-</a>
-<div class="title">Universal TV</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/universaltv/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Warner Channel" class="thumb" href="https://embedtvonline.com/warner/">
-<img alt="Warner Channel" decoding="async" src="https://embedtvonline.com/images/warner.png"/>
-</a>
-<div class="title">Warner Channel</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/warner/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-
-<h2 style="grid-column:1 / -1; text-align:center; margin:30px 0 8px; font-weight:800; color: #00d9ff;">Canais Abertos</h2>
-<div class="card">
-<a aria-label="Band SP" class="thumb" href="https://embedtvonline.com/bandsp/">
-<img alt="Band SP" decoding="async" src="https://embedtvonline.com/images/bandsp.png"/>
-</a>
-<div class="title">Band SP</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/bandsp/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Globo MG" class="thumb" href="https://embedtvonline.com/globomg/">
-<img alt="Globo MG" decoding="async" src="https://embedtvonline.com/images/globo.webp"/>
-</a>
-<div class="title">Globo MG</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/globomg/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Globo RJ" class="thumb" href="https://embedtvonline.com/globorj/">
-<img alt="Globo RJ" decoding="async" src="https://embedtvonline.com/images/globo.webp"/>
-</a>
-<div class="title">Globo RJ</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/globorj/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Globo RS" class="thumb" href="https://embedtvonline.com/globors/">
-<img alt="Globo RS" decoding="async" src="https://embedtvonline.com/images/globo.webp"/>
-</a>
-<div class="title">Globo RS</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/globors/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Globo SP" class="thumb" href="https://embedtvonline.com/globosp/">
-<img alt="Globo SP" decoding="async" src="https://embedtvonline.com/images/globo.webp"/>
-</a>
-<div class="title">Globo SP</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/globosp/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Record MG" class="thumb" href="https://embedtvonline.com/recordmg/">
-<img alt="Record MG" decoding="async" src="https://embedtvonline.com/images/record.png"/>
-</a>
-<div class="title">Record MG</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/recordmg/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Record RJ" class="thumb" href="https://embedtvonline.com/recordrj/">
-<img alt="Record RJ" decoding="async" src="https://embedtvonline.com/images/record.png"/>
-</a>
-<div class="title">Record RJ</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/recordrj/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Record SP" class="thumb" href="https://embedtvonline.com/recordsp/">
-<img alt="Record SP" decoding="async" src="https://embedtvonline.com/images/record.png"/>
-</a>
-<div class="title">Record SP</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/recordsp/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="RedeTV!" class="thumb" href="https://embedtvonline.com/redetv/">
-<img alt="RedeTV!" decoding="async" src="https://embedtvonline.com/images/redetv.png"/>
-</a>
-<div class="title">RedeTV!</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/redetv/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="SBT SP" class="thumb" href="https://embedtvonline.com/sbtsp/">
-<img alt="SBT SP" decoding="async" src="https://embedtvonline.com/images/sbtsp.png"/>
-</a>
-<div class="title">SBT SP</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/sbtsp/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="TV Cultura" class="thumb" href="https://embedtvonline.com/tvcultura/">
-<img alt="TV Cultura" decoding="async" src="https://embedtvonline.com/images/tvcultura.png"/>
-</a>
-<div class="title">TV Cultura</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/tvcultura/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-
-<h2 style="grid-column:1 / -1; text-align:center; margin:30px 0 8px; font-weight:800; color: #00d9ff;">Variedades</h2>
-<div class="card">
-<a aria-label="Adult Swim" class="thumb" href="https://embedtvonline.com/adultswim/">
-<img alt="Adult Swim" decoding="async" src="https://embedtvonline.com/images/adultswim.png"/>
-</a>
-<div class="title">Adult Swim</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/adultswim/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Animal Planet" class="thumb" href="https://embedtvonline.com/animalplanet/">
-<img alt="Animal Planet" decoding="async" src="https://embedtvonline.com/images/animalplanet.png"/>
-</a>
-<div class="title">Animal Planet</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/animalplanet/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Discovery Channel" class="thumb" href="https://embedtvonline.com/discoverychannel/">
-<img alt="Discovery Channel" decoding="async" src="https://embedtvonline.com/images/discoverychannel.png"/>
-</a>
-<div class="title">Discovery Channel</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/discoverychannel/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Discovery Home &amp; Health" class="thumb" href="https://embedtvonline.com/discoveryhh/">
-<img alt="Discovery Home &amp; Health" decoding="async" src="https://embedtvonline.com/images/discoveryhh.png"/>
-</a>
-<div class="title">Discovery Home &amp; Health</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/discoveryhh/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Investigation Discovery" class="thumb" href="https://embedtvonline.com/discoveryid/">
-<img alt="Investigation Discovery" decoding="async" src="https://embedtvonline.com/images/discoveryid.png"/>
-</a>
-<div class="title">Investigation Discovery</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/discoveryid/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Discovery Science" class="thumb" href="https://embedtvonline.com/discoveryscience/">
-<img alt="Discovery Science" decoding="async" src="https://embedtvonline.com/images/discoveryscience.png"/>
-</a>
-<div class="title">Discovery Science</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/discoveryscience/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Discovery Theater" class="thumb" href="https://embedtvonline.com/discoverytheater/">
-<img alt="Discovery Theater" decoding="async" src="https://embedtvonline.com/images/discoverytheater.png"/>
-</a>
-<div class="title">Discovery Theater</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/discoverytheater/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Discovery Turbo" class="thumb" href="https://embedtvonline.com/discoveryturbo/">
-<img alt="Discovery Turbo" decoding="async" src="https://embedtvonline.com/images/discoveryturbo.png"/>
-</a>
-<div class="title">Discovery Turbo</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/discoveryturbo/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Discovery World" class="thumb" href="https://embedtvonline.com/discoveryworld/">
-<img alt="Discovery World" decoding="async" src="https://embedtvonline.com/images/discoveryworld.png"/>
-</a>
-<div class="title">Discovery World</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/discoveryworld/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Food Network" class="thumb" href="https://embedtvonline.com/foodnetwork/">
-<img alt="Food Network" decoding="async" src="https://embedtvonline.com/images/foodnetwork.png"/>
-</a>
-<div class="title">Food Network</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/foodnetwork/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="GNT" class="thumb" href="https://embedtvonline.com/gnt/">
-<img alt="GNT" decoding="async" src="https://embedtvonline.com/images/gnt.png"/>
-</a>
-<div class="title">GNT</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/gnt/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="HGTV" class="thumb" href="https://embedtvonline.com/hgtv/">
-<img alt="HGTV" decoding="async" src="https://embedtvonline.com/images/hgtv.png"/>
-</a>
-<div class="title">HGTV</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/hgtv/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="History" class="thumb" href="https://embedtvonline.com/history/">
-<img alt="History" decoding="async" src="https://embedtvonline.com/images/history.png"/>
-</a>
-<div class="title">History</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/history/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="History 2" class="thumb" href="https://embedtvonline.com/history2/">
-<img alt="History 2" decoding="async" src="https://embedtvonline.com/images/history2.png"/>
-</a>
-<div class="title">History 2</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/history2/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Multishow" class="thumb" href="https://embedtvonline.com/multishow/">
-<img alt="Multishow" decoding="async" src="https://embedtvonline.com/images/multishow.png"/>
-</a>
-<div class="title">Multishow</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/multishow/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="National Geographic" class="thumb" href="https://embedtvonline.com/natgeo/">
-<img alt="National Geographic" decoding="async" src="https://embedtvonline.com/images/natgeo.png"/>
-</a>
-<div class="title">National Geographic</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/natgeo/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="National Geographic Wild" class="thumb" href="https://embedtvonline.com/natgeowild/">
-<img alt="National Geographic Wild" decoding="async" src="https://embedtvonline.com/images/natgeowild.png"/>
-</a>
-<div class="title">National Geographic Wild</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/natgeowild/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="TLC" class="thumb" href="https://embedtvonline.com/tlc/">
-<img alt="TLC" decoding="async" src="https://embedtvonline.com/images/tlc.png"/>
-</a>
-<div class="title">TLC</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/tlc/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Travel Box Brazil" class="thumb" href="https://embedtvonline.com/travelbox/">
-<img alt="Travel Box Brazil" decoding="async" src="https://embedtvonline.com/images/travelbox.png"/>
-</a>
-<div class="title">Travel Box Brazil</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/travelbox/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="VH1" class="thumb" href="https://embedtvonline.com/vh1/">
-<img alt="VH1" decoding="async" src="https://embedtvonline.com/images/vh1.png"/>
-</a>
-<div class="title">VH1</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/vh1/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-
-<h2 style="grid-column:1 / -1; text-align:center; margin:30px 0 8px; font-weight:800; color: #00d9ff;">Notícias</h2>
-<div class="card">
-<a aria-label="BandNews" class="thumb" href="https://embedtvonline.com/bandnews/">
-<img alt="BandNews" decoding="async" src="https://embedtvonline.com/images/bandnews.png"/>
-</a>
-<div class="title">BandNews</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/bandnews/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="CNN Brasil" class="thumb" href="https://embedtvonline.com/cnnbrasil/">
-<img alt="CNN Brasil" decoding="async" src="https://embedtvonline.com/images/cnnbrasil.png"/>
-</a>
-<div class="title">CNN Brasil</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/cnnbrasil/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="GloboNews" class="thumb" href="https://embedtvonline.com/globonews/">
-<img alt="GloboNews" decoding="async" src="https://embedtvonline.com/images/globonews.png"/>
-</a>
-<div class="title">GloboNews</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/globonews/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Jovem Pan News" class="thumb" href="https://embedtvonline.com/jovempannews/">
-<img alt="Jovem Pan News" decoding="async" src="https://embedtvonline.com/images/jovempannews.png"/>
-</a>
-<div class="title">Jovem Pan News</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/jovempannews/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-<div class="card">
-<a aria-label="Record News" class="thumb" href="https://embedtvonline.com/recordnews/">
-<img alt="Record News" decoding="async" src="https://embedtvonline.com/images/recordnews.png"/>
-</a>
-<div class="title">Record News</div>
-<div class="embedrow"><input class="embed-input" readonly="" type="text" value='&lt;iframe src="https://embedtvonline.com/recordnews/" allow="autoplay; fullscreen; encrypted-media" frameborder="0" width="100%" height="550" loading="lazy"&gt;&lt;/iframe&gt;'/></div>
-</div>
-
-</main>
-
-<footer class="embedtv" role="contentinfo">
-  <small style="display:block;">© Roger Play. Teste cm+!L>.</small>
-</footer>
-
-<script>
-(function(){
-  const grid = document.querySelector('.grid');
-  if(!grid) return;
-  const catBar = document.getElementById('catBar');
-  const searchInput = document.getElementById('searchInput');
-
-  const children = Array.from(grid.children);
-  let currentCat = '';
-  children.forEach(el => {
-    if(el.tagName === 'H2'){
-      currentCat = (el.textContent || '').trim();
-      el.setAttribute('data-category-title', currentCat);
-      return;
-    }
-    if(el.classList && el.classList.contains('card')){
-      el.dataset.category = currentCat;
-    }
-  });
-
-  const categories = ['Todos'];
-  children.forEach(el => {
-    if(el.tagName === 'H2'){
-      const name = (el.textContent || '').trim();
-      if(name && !categories.includes(name)) categories.push(name);
-    }
-  });
-
-  let activeCategory = 'Todos';
-  function renderCatButtons(){
-    if(!catBar) return;
-    catBar.innerHTML = '';
-    categories.forEach(cat => {
-      const b = document.createElement('button');
-      b.className = 'cat-btn' + (cat === activeCategory ? ' active':'');
-      b.type = 'button';
-      b.textContent = cat;
-      b.setAttribute('data-cat', cat);
-      b.addEventListener('click', () => {
-        activeCategory = cat;
-        document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.toggle('active', btn === b));
-        applyFilters();
-      });
-      catBar.appendChild(b);
-    });
-  }
-  renderCatButtons();
-
-  let q = '';
-  if(searchInput){
-    searchInput.addEventListener('input', () => {
-      q = (searchInput.value || '').toLowerCase();
-      applyFilters();
-    });
-  }
-
-  function enhanceCopyButtons(){
-    document.querySelectorAll('.embedrow').forEach(row => {
-      if(row.querySelector('.copy-btn')) return;
-      const btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.type = 'button';
-      btn.setAttribute('aria-label','Copiar iframe');
-      btn.innerHTML =
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" ' +
-  'aria-hidden="true" focusable="false" fill="#8d93a0">' +
-  '<path d="M288 64C252.7 64 224 92.7 224 128L224 384C224 419.3 252.7 448 288 448L480 448C515.3 448 544 419.3 544 384L544 183.4C544 166 536.9 149.3 524.3 137.2L466.6 81.8C454.7 70.4 438.8 64 422.3 64L288 64zM160 192C124.7 192 96 220.7 96 256L96 512C96 547.3 124.7 576 160 576L352 576C387.3 576 416 547.3 416 512L416 496L352 496L352 512L160 512L160 256L176 256L176 192L160 192z"/>' +
-  '</svg>';
-      btn.addEventListener('click', async () => {
-        const input = row.querySelector('.embed-input');
-        const val = input ? input.value : '';
-        try{
-          if(navigator.clipboard && window.isSecureContext){
-            await navigator.clipboard.writeText(val);
-          }else{
-            input.select(); document.execCommand('copy'); input.blur();
-          }
-          toast(row, 'Copiado!');
-        }catch(e){
-          toast(row, 'Falhou');
+    
+    <script>
+        // ==================== CONFIGURAÇÕES ====================
+        const NUMERO_WHATSAPP = "5512988461978";
+        const LINK_DO_SITE = window.location.href;
+        
+        // ===== 5 ANÚNCIOS DE VOZ DIFERENTES =====
+        const ARQUIVOS_ANUNCIO_AUDIO = [
+            "anun1.mp3",
+            "anun2.mp3",
+            "anun3.mp3",
+            "anun4.mp3",
+            "anun5.mp3"
+        ];
+        
+        const MENSAGEM_ANUNCIO_AUDIO = "📢 Ótica Heloísa - Promoção em armações e lentes! Visite nossa loja ou fale conosco pelo WhatsApp!";
+        const VOLUME_ANUNCIO_AUDIO = 0.95;
+        const VOLUME_PLAYER = 0.9;
+        const QUANTIDADE_MUSICAS_AUDIO = 2;  // Anúncio a cada 2 músicas completas
+        
+        // ==================== PLAYLIST (21 músicas) ====================
+        const musicas = [
+            { id: 1, title: "Thiago Martins - Onde Deus Possa Me Ouvir", src: "Thiago_Martins_Onde_Deus_Possa_Me_Ouvir_Esperando_Avi_es_muzzik.m4a" },
+            { id: 2, title: "Leandro Sapucahy - Poxa / Disritmia", src: "LEANDRO_SAPUCAHY_Poxa_Disritmia_Espelho_Que_Nem_Antigamente__muzzik.m4a" },
+            { id: 3, title: "Felipe Araújo e Thiaguinho - Espaçosa Demais", src: "Felipe_Ara_jo_Thiaguinho_Espa_osa_Demais_muzzik.m4a" },
+            { id: 4, title: "Bokaloka - Duas paixões / Procurando alguém / Bye Bye", src: "Bokaloka_Duas_paix_es_Procurando_algu_m_Bye_Bye_muzzik.m4a" },
+            { id: 5, title: "Péricles - Me Apaixonei pela Pessoa Errada", src: "Live_P_ricles_Me_Apaixonei_Pela_Pessoa_Errada_muzzik.m4a" },
+            { id: 6, title: "Desse Jeito - Desse Jeito / Ruim pra Mim", src: "Desse_Jeito_Desse_Jeito_Ruim_pra_Mim_Ao_Vivo__muzzik.m4a" },
+            { id: 7, title: "Ferrugem - Telepatia (part. Thiaguinho)", src: "Ferrugem_Telepatia_part_Thiaguinho_muzzik.m4a" },
+            { id: 8, title: "Délcio Luiz - Meu casamento / Refém do coração / Luz do desejo", src: "D_lcio_Luiz_Meu_casamento_Ref_m_do_cora_o_Luz_do_desejo_muzzik.m4a" },
+            { id: 9, title: "Até Que - Até Que Durou (Ao Vivo)", src: "At_Que_At_Que_Durou_Ao_Vivo__muzzik.m4a" },
+            { id: 10, title: "Ludmilla - Falta de Mim", src: "LUDMILLA_Falta_de_Mim_muzzik.m4a" },
+            { id: 11, title: "Belo - Transas (Ao Vivo)", src: "Belo_Transas_Ao_Vivo_DVD_Belo_In_Concert_muzzik.m4a" },
+            { id: 12, title: "Ivete Sangalo - Ah, Como Eu Te Amei / Retalhos de Cetim / Ivete Clareou", src: "Ivete_Sangalo_Ah_Como_Eu_Te_Amei_Retalhos_de_Cetim_Ivete_Clareou_muzzik.m4a" },
+            { id: 13, title: "Mania - Mania de Você", src: "Mania_de_Mania_de_Voc__muzzik.m4a" },
+            { id: 14, title: "Xande de Pilares - Defunto / Caguete / Malandro Não Vacila", src: "Xande_de_Pilares_Defunto_Caguete_Malandro_N_o_Vacila_muzzik.m4a" },
+            { id: 15, title: "Kiko - Nem de Graça / Falando Segredo / Brilho de Cristal", src: "Kiko_Nem_de_Gra_a_Falando_Segredo_Brilho_de_Cristal_muzzik.m4a" },
+            { id: 16, title: "Marvvila e Ivete Sangalo - Você Não Vai Sofrer", src: "Marvvila_Ivete_Sangalo_Voc_N_o_Vai_Sofrer_muzzik.m4a" },
+            { id: 17, title: "Rolezinho - Rolezinho (Grupo)", src: "Rolezinho_Rolezinho_Grupo_muzzik.m4a" },
+            { id: 18, title: "PaGGodin - L o Santana / Girassol / Uma Brasileira / Sombra Da Maldade", src: "PaGGodin_L_o_Santana_Girassol_Uma_Brasileira_Sombra_Da_Maldade_muzzik.m4a" },
+            { id: 19, title: "Leandro Sapucahy - Naquela Mesa", src: "Leandro_Sapucahy_Naquela_Mesa_muzzik.m4a" },
+            { id: 20, title: "Sorriso Maroto - Meu Jeito de Ser / Que Se Chama Amor", src: "Meu_Jeito_De_Ser_Que_Se_Chama_De_Amor_Sorriso_Maroto_muzzik.m4a" },
+            { id: 21, title: "Pra Não - Pra Não Pensar Em Você (Ao Vivo)", src: "Pra_N_o_Pra_N_o_Pensar_Em_Voc_Ao_Vivo__muzzik.m4a" } 
+        ];
+        
+        // ==================== VARIÁVEIS ====================
+        let currentIndex = 0, isPlaying = false, shuffleMode = true;   // shuffle ativado por padrão (música aleatória sempre)
+        let timerInterval = null;
+        let filteredPlaylist = [...musicas];
+        let isBackgroundActive = false;
+        let visualizerInterval = null;
+        let isLoadingTrack = false;
+        let musicCounter = 0;
+        let adAudioPlaying = false;
+        let initialAdSequence = false;
+        
+        // Elementos
+        const musicPlayerEl = document.getElementById('musicPlayer');
+        const playBtn = document.getElementById('playPauseBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const shuffleBtn = document.getElementById('shuffleBtn');
+        const progressFill = document.getElementById('progressFill');
+        const currentTimeEl = document.getElementById('currentTime');
+        const totalTimeEl = document.getElementById('totalTime');
+        const trackArtist = document.getElementById('trackArtist');
+        const splash = document.getElementById('splash');
+        const tapToStart = document.getElementById('tap-to-start');
+        const menuButton = document.getElementById('menuButton');
+        const menuPopup = document.getElementById('menuPopup');
+        const notificationTop = document.getElementById('notificationTop');
+        const notificationMessage = document.getElementById('notificationMessage');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const manualModal = document.getElementById('manualModal');
+        const infoModal = document.getElementById('infoModal');
+        const adAudio = document.getElementById('adAudio');
+        const audioAdToast = document.getElementById('audioAdToast');
+        const audioAdText = document.getElementById('audioAdText');
+        const audioIndicator = document.getElementById('audioIndicator');
+        
+        musicPlayerEl.volume = VOLUME_PLAYER;
+        
+        // Função auxiliar random index
+        function getRandomTrackIndex() {
+            return Math.floor(Math.random() * filteredPlaylist.length);
         }
-      });
-      row.appendChild(btn);
-      const t = document.createElement('div');
-      t.className = 'copy-toast';
-      t.textContent = 'Copiado!';
-      row.appendChild(t);
-    });
-  }
-
-  function toast(row, msg){
-    const t = row.querySelector('.copy-toast');
-    if(!t) return;
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'), 900);
-  }
-
-  function applyFilters(){
-    const cards = Array.from(grid.querySelectorAll('.card'));
-    const hasQuery = q && q.trim().length > 0;
-
-    cards.forEach(card => {
-      const title = (card.querySelector('.title')?.textContent || '').toLowerCase();
-      const qOk = !hasQuery || title.includes(q);
-      const catOk = hasQuery ? true : ((activeCategory === 'Todos') || (card.dataset.category === activeCategory));
-      card.style.display = (catOk && qOk) ? '' : 'none';
-    });
-
-    const blocks = [];
-    let current = null;
-    Array.from(grid.children).forEach(el => {
-      if(el.tagName === 'H2'){
-        if(current) blocks.push(current);
-        current = {h2: el, cards: []};
-      }else if(el.classList?.contains('card') && current){
-        current.cards.push(el);
-      }
-    });
-    if(current) blocks.push(current);
-
-    blocks.forEach(({h2, cards}) => {
-      const anyVisible = cards.some(c => c.style.display !== 'none');
-      h2.style.display = anyVisible ? '' : 'none';
-    });
-  }
-
-  enhanceCopyButtons();
-  applyFilters();
-})();
-</script>
-
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"baa63aec72774167ba91751afaa97205","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+        
+        function getRandomAudioAd() {
+            if (ARQUIVOS_ANUNCIO_AUDIO.length === 0) return null;
+            const randomIndex = Math.floor(Math.random() * ARQUIVOS_ANUNCIO_AUDIO.length);
+            return ARQUIVOS_ANUNCIO_AUDIO[randomIndex];
+        }
+        
+        function formatTime(sec) {
+            if (isNaN(sec) || !isFinite(sec)) return "0:00";
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+        
+        function stopTimer() { if (timerInterval) clearInterval(timerInterval); timerInterval = null; }
+        function startTimer() {
+            stopTimer();
+            timerInterval = setInterval(() => {
+                if (isPlaying && musicPlayerEl.duration && !musicPlayerEl.paused) {
+                    const percent = (musicPlayerEl.currentTime / musicPlayerEl.duration) * 100;
+                    progressFill.style.width = percent + '%';
+                    currentTimeEl.textContent = formatTime(musicPlayerEl.currentTime);
+                }
+            }, 200);
+        }
+        
+        function iniciarVisualizer() {
+            if (visualizerInterval) clearInterval(visualizerInterval);
+            visualizerInterval = setInterval(() => {
+                if (isPlaying && musicPlayerEl.duration && !musicPlayerEl.paused) {
+                    const bars = document.querySelectorAll('.visualizer-bar');
+                    bars.forEach(bar => { bar.style.height = (8 + Math.random() * 32) + 'px'; });
+                } else {
+                    document.querySelectorAll('.visualizer-bar').forEach(bar => bar.style.height = '4px');
+                }
+            }, 100);
+        }
+        function pararVisualizer() { if (visualizerInterval) clearInterval(visualizerInterval); visualizerInterval = null; document.querySelectorAll('.visualizer-bar').forEach(bar => bar.style.height = '4px'); }
+        
+        function showLoading() { loadingSpinner.classList.add('show'); }
+        function hideLoading() { loadingSpinner.classList.remove('show'); }
+        function showNotification(msg, duration = 3000) { if (window.notifTimeout) clearTimeout(window.notifTimeout); notificationMessage.innerText = msg; notificationTop.classList.add('show'); window.notifTimeout = setTimeout(() => notificationTop.classList.remove('show'), duration); }
+        
+        // ========== PLAY MUSICA ALEATÓRIA ==========
+        async function playRandomTrack() {
+            if (!isBackgroundActive) { showNotification('⚠️ Ative primeiro', 2000); return false; }
+            if (isLoadingTrack) return false;
+            const newIndex = getRandomTrackIndex();
+            currentIndex = newIndex;
+            const track = filteredPlaylist[currentIndex];
+            trackArtist.textContent = track.title;
+            currentTimeEl.textContent = '0:00';
+            totalTimeEl.textContent = '0:00';
+            progressFill.style.width = '0%';
+            
+            isLoadingTrack = true;
+            showLoading();
+            musicPlayerEl.pause();
+            musicPlayerEl.src = track.src;
+            musicPlayerEl.load();
+            
+            return new Promise((resolve) => {
+                const timeoutId = setTimeout(() => {
+                    hideLoading(); isLoadingTrack = false; showNotification(`⚠️ Erro: ${track.title}`, 2000);
+                    resolve(false);
+                }, 8000);
+                musicPlayerEl.oncanplaythrough = async () => {
+                    clearTimeout(timeoutId); hideLoading(); isLoadingTrack = false;
+                    try { await musicPlayerEl.play(); isPlaying = true; playBtn.innerHTML = '<i class="fas fa-pause"></i>'; startTimer(); iniciarVisualizer(); resolve(true); } 
+                    catch(e) { isPlaying = false; playBtn.innerHTML = '<i class="fas fa-play"></i>'; resolve(false); }
+                };
+                musicPlayerEl.onerror = () => { clearTimeout(timeoutId); hideLoading(); isLoadingTrack = false; showNotification(`Erro ao carregar`, 1500); resolve(false); };
+                if (musicPlayerEl.duration) totalTimeEl.textContent = formatTime(musicPlayerEl.duration);
+                else musicPlayerEl.addEventListener('loadedmetadata', () => { totalTimeEl.textContent = formatTime(musicPlayerEl.duration); }, { once: true });
+            });
+        }
+        
+        // ========== LÓGICA ANÚNCIO + CONTADOR ==========
+        function incrementMusicCounterAndMaybeAd() {
+            musicCounter++;
+            const remaining = QUANTIDADE_MUSICAS_AUDIO - musicCounter;
+            showNotification(`🎵 Música ${musicCounter}/${QUANTIDADE_MUSICAS_AUDIO} - Próximo anúncio em ${remaining}`, 2000);
+            if (musicCounter >= QUANTIDADE_MUSICAS_AUDIO) {
+                musicCounter = 0;
+                playAudioAd();
+                return true;
+            }
+            return false;
+        }
+        
+        function playAudioAd() {
+            if (adAudioPlaying) return;
+            const audioFile = getRandomAudioAd();
+            if (!audioFile) { showNotification("❌ Anúncio não encontrado", 2000); return; }
+            const wasPlaying = isPlaying;
+            if (wasPlaying) { musicPlayerEl.pause(); isPlaying = false; playBtn.innerHTML = '<i class="fas fa-play"></i>'; stopTimer(); pararVisualizer(); }
+            adAudioPlaying = true;
+            adAudio.src = audioFile;
+            adAudio.volume = VOLUME_ANUNCIO_AUDIO;
+            adAudio.load();
+            audioAdText.innerHTML = `<i class="fas fa-volume-up"></i> 📢 Ótica Heloísa - Anúncio especial! (${audioFile})`;
+            audioAdToast.classList.add('show');
+            adAudio.play().catch(e => { console.log(e); finishAdAndResume(wasPlaying); });
+            adAudio.onended = () => { finishAdAndResume(wasPlaying); };
+            adAudio.onerror = () => { finishAdAndResume(wasPlaying); showNotification(`Erro no anúncio: ${audioFile}`, 2000); };
+        }
+        
+        function finishAdAndResume(wasPlaying) {
+            adAudioPlaying = false;
+            audioAdToast.classList.remove('show');
+            if (wasPlaying) {
+                playRandomTrack().catch(e => console.log);
+            } else if (!isPlaying && isBackgroundActive) {
+                // manter pausado
+            }
+        }
+        
+        // ========== INÍCIO: PRIMEIRO ANÚNCIO ANTES DA MÚSICA ==========
+        async function startInitialAdAndPlay() {
+            initialAdSequence = true;
+            showNotification("🎧 Iniciando com anúncio da Ótica Heloísa! Depois, 2 músicas aleatórias...", 4000);
+            const wasPlayingState = false;
+            if (adAudioPlaying) return;
+            const audioFile = getRandomAudioAd();
+            if (!audioFile) { playRandomTrack(); return; }
+            adAudioPlaying = true;
+            adAudio.src = audioFile;
+            adAudio.volume = VOLUME_ANUNCIO_AUDIO;
+            adAudio.load();
+            audioAdText.innerHTML = `<i class="fas fa-volume-up"></i> 📢 PRIMEIRO ANÚNCIO - Ótica Heloísa (${audioFile})`;
+            audioAdToast.classList.add('show');
+            adAudio.play().catch(e => { finishInitialAd(); });
+            adAudio.onended = () => { finishInitialAd(); };
+            adAudio.onerror = () => { finishInitialAd(); };
+        }
+        
+        function finishInitialAd() {
+            adAudioPlaying = false;
+            audioAdToast.classList.remove('show');
+            musicCounter = 0;  // conta a partir de zero após o anúncio inicial
+            initialAdSequence = false;
+            playRandomTrack().then(() => {
+                showNotification("✅ Anúncio inicial concluído! Agora ciclo: 2 músicas → anúncio → infinito", 4000);
+                audioIndicator.innerHTML = `<i class="fas fa-music"></i> 5 anúncios | Próx: ${QUANTIDADE_MUSICAS_AUDIO} músicas`;
+            });
+        }
+        
+        // ========== CONTROLES DO PLAYER ==========
+        function pauseMusic() { musicPlayerEl.pause(); isPlaying = false; playBtn.innerHTML = '<i class="fas fa-play"></i>'; stopTimer(); pararVisualizer(); }
+        function togglePlayPause() { if (!isBackgroundActive) { showNotification('Clique em ATIVAR primeiro', 2000); return; } isPlaying ? pauseMusic() : playRandomTrack(); }
+        async function nextTrack() { if (isLoadingTrack) return; stopTimer(); await playRandomTrack(); }
+        async function prevTrack() { if (isLoadingTrack) return; stopTimer(); await playRandomTrack(); }
+        
+        // Evento de fim da música: incrementa contador e se não ad, já toca próxima, se ad, aguarda.
+        musicPlayerEl.onended = () => {
+            if (!isBackgroundActive) return;
+            stopTimer();
+            const adTriggered = incrementMusicCounterAndMaybeAd();
+            if (!adTriggered) {
+                playRandomTrack().catch(e => console.log);
+            }
+        };
+        
+        // ========== ÁUDIO BACKGROUND ==========
+        function createSilentAudio() {
+            const sampleRate = 44100, duration = 5, numSamples = sampleRate * duration;
+            const buffer = new ArrayBuffer(44 + numSamples * 2);
+            const view = new DataView(buffer);
+            const writeString = (view, offset, str) => { for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i)); };
+            writeString(view, 0, 'RIFF'); view.setUint32(4, 36 + numSamples * 2, true); writeString(view, 8, 'WAVE');
+            writeString(view, 12, 'fmt '); view.setUint32(16, 16, true); view.setUint16(20, 1, true);
+            view.setUint16(22, 1, true); view.setUint32(24, sampleRate, true); view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true); view.setUint16(34, 16, true); writeString(view, 36, 'data');
+            view.setUint32(40, numSamples * 2, true); let offset = 44;
+            for (let i = 0; i < numSamples; i++) { view.setInt16(offset, 0, true); offset += 2; }
+            return new Blob([buffer], { type: 'audio/wav' });
+        }
+        
+        const backgroundAudio = document.getElementById('backgroundAudio');
+        let backgroundInterval = null;
+        async function ativarAudioBackground() {
+            try {
+                const silentUrl = URL.createObjectURL(createSilentAudio());
+                backgroundAudio.src = silentUrl;
+                backgroundAudio.loop = true;
+                backgroundAudio.volume = 0.001;
+                await backgroundAudio.play();
+                isBackgroundActive = true;
+                audioIndicator.innerHTML = `<i class="fas fa-bluetooth-b"></i> Áudio OK | 5 anúncios`;
+                audioIndicator.style.color = '#25D366';
+                if (backgroundInterval) clearInterval(backgroundInterval);
+                backgroundInterval = setInterval(async () => {
+                    if (backgroundAudio.paused && isBackgroundActive) await backgroundAudio.play().catch(e=>{});
+                    if (isPlaying && musicPlayerEl.paused && !musicPlayerEl.ended && !adAudioPlaying) await musicPlayerEl.play().catch(e=>{});
+                    if (musicPlayerEl.ended && isPlaying && !adAudioPlaying) nextTrack();
+                }, 1000);
+                return true;
+            } catch (error) { audioIndicator.innerHTML = '<i class="fas fa-exclamation"></i> Erro'; return false; }
+        }
+        
+        // ========== EVENTOS UI ==========
+        document.getElementById('progressBar').addEventListener('click', (e) => { const rect = e.currentTarget.getBoundingClientRect(); const percent = (e.clientX - rect.left) / rect.width; if (musicPlayerEl.duration) musicPlayerEl.currentTime = percent * musicPlayerEl.duration; resetHideTimer(); });
+        playBtn.addEventListener('click', () => { if (!isBackgroundActive) showNotification('Clique em ATIVAR primeiro!', 2000); else togglePlayPause(); resetHideTimer(); });
+        prevBtn.addEventListener('click', () => { prevTrack(); resetHideTimer(); });
+        nextBtn.addEventListener('click', () => { nextTrack(); resetHideTimer(); });
+        shuffleBtn.addEventListener('click', () => { shuffleMode = !shuffleMode; showNotification(shuffleMode ? '🔀 Modo Aleatório (sempre aleatório)' : '➡️ Aleatório padrão', 2000); resetHideTimer(); });
+        
+        let touchStartX = 0, lastTap = 0;
+        document.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; const now = new Date().getTime(); if (now - lastTap < 300) { e.preventDefault(); togglePlayPause(); } lastTap = now; });
+        document.addEventListener('touchend', (e) => { const diff = e.changedTouches[0].screenX - touchStartX; if (Math.abs(diff) > 50) { if (diff > 0) prevTrack(); else nextTrack(); } });
+        
+        function toggleMenu() { menuPopup.classList.toggle('open'); }
+        menuButton.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+        document.addEventListener('click', (e) => { if (!menuButton.contains(e.target) && !menuPopup.contains(e.target)) menuPopup.classList.remove('open'); });
+        document.getElementById('shareMenuBtn').addEventListener('click', () => { if (navigator.share) navigator.share({ title: 'Ótica Heloísa', url: LINK_DO_SITE }); else { navigator.clipboard.writeText(LINK_DO_SITE); showNotification('Link copiado!', 2000); } menuPopup.classList.remove('open'); });
+        document.getElementById('whatsappMenuBtn').addEventListener('click', () => { window.open(`https://wa.me/${NUMERO_WHATSAPP}`, '_blank'); menuPopup.classList.remove('open'); });
+        document.getElementById('manualMenuBtn').addEventListener('click', () => { manualModal.classList.add('open'); menuPopup.classList.remove('open'); });
+        document.getElementById('closeManualBtn').addEventListener('click', () => { manualModal.classList.remove('open'); });
+        document.getElementById('infoButton').addEventListener('click', () => { infoModal.classList.add('open'); });
+        document.getElementById('closeInfoBtn').addEventListener('click', () => { infoModal.classList.remove('open'); });
+        document.getElementById('ctaButton').addEventListener('click', () => { window.open(`https://wa.me/${NUMERO_WHATSAPP}`, '_blank'); });
+        
+        // Bluetooth: Web Bluetooth API
+        const bluetoothBtn = document.getElementById('bluetoothButton');
+        bluetoothBtn.addEventListener('click', async () => {
+            if ('bluetooth' in navigator) {
+                try {
+                    showNotification("🔵 Procurando dispositivo Bluetooth...", 2000);
+                    const device = await navigator.bluetooth.requestDevice({ acceptAllDevices: true });
+                    showNotification(`✅ Conectado a ${device.name || "dispositivo"}`, 3000);
+                } catch (err) { showNotification(`❌ Bluetooth: ${err.message}`, 3000); }
+            } else { showNotification("Seu navegador não suporta Web Bluetooth", 3000); }
+        });
+        
+        const bottomControls = document.getElementById('bottomControls');
+        let hideTimeout;
+        function showControls() { bottomControls.classList.remove('hide'); clearTimeout(hideTimeout); hideTimeout = setTimeout(() => bottomControls.classList.add('hide'), 3000); }
+        function resetHideTimer() { if (bottomControls.classList.contains('hide')) showControls(); else { clearTimeout(hideTimeout); hideTimeout = setTimeout(() => bottomControls.classList.add('hide'), 3000); } }
+        document.addEventListener('touchstart', resetHideTimer); document.addEventListener('click', resetHideTimer); showControls();
+        
+        // Ativação principal: ativa background, depois toca anúncio inicial
+        tapToStart.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            showNotification("🔊 Ativando áudio + Bluetooth disponível...", 2000);
+            const ok = await ativarAudioBackground();
+            if (ok) {
+                splash.classList.add('hidden');
+                setTimeout(() => splash.style.display = 'none', 500);
+                tapToStart.style.display = 'none';
+                await startInitialAdAndPlay();
+                try { await document.documentElement.requestFullscreen(); } catch(e) {}
+                showNotification(`✅ 5 anúncios de voz | Ciclo a cada ${QUANTIDADE_MUSICAS_AUDIO} músicas | Início com anúncio`, 5000);
+            } else showNotification('❌ Falha ativação', 3000);
+        });
+        
+        loadTrackUI: function dummy() { trackArtist.textContent = "Clique em ATIVAR"; }
+        iniciarVisualizer();
+    </script>
 </body>
 </html>
